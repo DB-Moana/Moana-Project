@@ -1,0 +1,29 @@
+How to use it
+
+The Olympics For Everyone is searching service based on keywords about Olympics. You can use it whenever you are curious about Olympic players, sports, game events.
+
+The search page of Olympics For Everyone has  4 input fields : Player, Date, Country, Sports. You can use one of them to search or combine two of them to search more specific informations. However, Player+Country, Player+Sports cannot be used for search because they have overlapping parts.
+
+1. Player
+If you want to know about your favorite player, type in the player's name on Player field and click Search button. Information about the player will be shown at the top and all the game events that player is participating will be shown as a result.
+
+2. Date
+If you want to know which games are in a specific date, type in the date you are curious about and click Search button. All the game events which will be held in that date will be shown as a result.
+
+3. Country
+If you want to know about your country's game events, type in your country's name and click Search button. Information about your country will be shown at the top and all the game events your country is participate in will be shown as a result.
+
+4. Sports
+If you want to know about specific sport, you can type the sport's name and click Search button. Information about that result will be shown at the top and all the game events of that sport will be shown as a result.
+
+5. Player + Date
+If you input player and date, the result will show you all the game events which the player is participate in, on that date. 
+
+6. Date + Country
+If you input date and country, the result will show you all the game events that the country is participate in, on that date.
+
+7. Date + Sports
+If you input date and sports, the result will show you all the game events about the sport, which is held on that date.
+
+8. Country + Sports
+If you input country and sports, the result will show you all the game events about the sport, which the country is participate in.
