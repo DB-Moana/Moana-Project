@@ -143,10 +143,10 @@ app.post('/search-result', function (req, res) {
 					queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM Found_event, EVENT, Place WHERE Found_event.E_type = EVENT.E_Type AND Found_event.S_Name = EVENT.S_Name AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 					connection.query(queryStrb);
 					if(searchtag == 1){
-						queryStr3 ="SELECT DISTINCT * FROM event_building;";
+						queryStr3 ="SELECT FROM event_building;";
 					}
 					else{
-						queryStr3 ="SELECT DISTINCT * FROM event_building WHERE event_building.Date ='" + req.body.date+"';";
+						queryStr3 ="SELECT FROM event_building WHERE event_building.Date ='" + req.body.date+"';";
 					}
 					
 					console.log(queryStr3);
@@ -201,7 +201,7 @@ app.post('/search-result', function (req, res) {
 	{	
 		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.Date ='" + req.body.date+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);		
-		queryStr =  "SELECT DISTINCT * FROM event_building;"
+		queryStr =  "SELECT FROM event_building;"
 		connection.query(queryStr, function (err, rows, fields) { // send query to MySQL
 			if (err)
 				throw err;
@@ -314,7 +314,7 @@ app.post('/search-result', function (req, res) {
 		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + req.body.sports+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);
 
-		queryStr = "SELECT DISTINCT * FROM event_building ORDER BY event_building.Date;"
+		queryStr = "SELECT FROM event_building ORDER BY event_building.Date;"
 		console.log(queryStr);
 		connection.query(queryStr, function (err, rows, fields) { // send query to MySQL
 				if (err)
@@ -355,7 +355,7 @@ app.post('/search-result', function (req, res) {
 	{
 		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + req.body.sports+"'AND EVENT.Date ='" + req.body.date+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);
-		queryStr = "SELECT DISTINCT * FROM event_building;"
+		queryStr = "SELECT FROM event_building;"
 		console.log(queryStr);
 		connection.query(queryStr, function (err, rows, fields) { // send query to MySQL
 				if (err)
