@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset = "UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset = "UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -30,19 +31,19 @@
       </div>
  </nav>
 <div class="container" style="text-align:center">
-	<div class = "text-center" class= "text-capitalize">
-		<br>
-		<br>
-		<br>
-		<h1>The Olympics For Everyone</h1>
-	</div>
-	<br>
-	 <form class="form-inline" action="/search-result" method="POST">
+  <div class = "text-center" class= "text-capitalize">
+    <br>
+    <br>
+    <br>
+    <h1>The Olympics For Everyone</h1>
+  </div>
+  <br>
+   <form class="form-inline" action="/search-result" method="POST">
       <div class="form-group">
       <div class="center">
       <div>
         <input type="text" class="form-control" name="player" placeholder="Player"></input>
-        <input data-format="yyyy-MM-dd" type="text" class="form-control" name="date" placeholder="Date"></input>
+        <input type="text" class="form-control" name="date" placeholder="Date"></input>
         <span class="add-on">
       <i data-time-icon="icon-time" data-date-icon="icon-calendar">
       </i>
@@ -51,59 +52,104 @@
         <input type="text" class="form-control" name="sports" placeholder="Sports"></input>
         <button type="submit" class="btn btn-danger">Search</button>
       </div>
+      <br><br>
+     <% if(noresult){ %>
+     <p class="text-left text-uppercase"> No Result :( </p>
+     <%} else{ %>
       </div>
     </div>
      </form>
-     <br><br>
-			<table class="table table-striped table-bordered">	
-                  <thead>
+     
+      <% if(if_player){ %>
+      
+        <p class="text-left text-uppercase">Player information</p>
+
+      <table class="table table-striped table-bordered">  
+                  
                     <tr>
-                        <th>Player</th>
-                        <th>Date</th>
-                        <th>Country</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Height</th>
+                        <th>Weight</th>
                         <th>Sports</th>
+                        <th>Country</th>
                     </tr>
-                    </thead>
-                    
-				<div class="ui blue fluid card">
-					 <div class="content">			    		
-						<div class="ui very relaxed selection celled list">
-							<%     for (var i = 0; i < info.length; i++) {
-								   var curPlayer = info[i].P_Name;
-                                   var curDate = info[i].Phone_Num;
-                                   var curCountry = info[i].Country;
-								   var curSports = info[i].Sport;
-                                   %>
-                                   <tbody>
-								    <div class="item">
-										<div class="ui grid">
-						    				<div class="fourteen wide column">
-						    					<div class="ui header">
-                                                    <td id = "player">
-										    			<%=curPlayer %>
-                                                    </td>
-										    		<td id = "date" >
-										    			<%=curDate %>
-                                                    </td>
-                                                    <td id = "country">
-										    			<%=curCountry %>
-                                                    </td>
-                                                    <td id = "sports">
-										    			<%=curSports %>
-										    		</td>
-		
-												</div>
-						    				</div>
-						    			</div>
-                                    </div>
-                                </tbody>
-							<% } %>	
-                        </div>
-                      </div>
-                        </div>
+                    <tr>
+                      <th><%=player[0].P_Name%></th>
+                      <th><%=player[0].Age%></th>
+                      <th><%=player[0].Height%></th>
+                      <th><%=player[0].Weight%></th>
+                      <th><%=player[0].Sport%></th>
+                      <th><%=player[0].Country%></th>
+                    </tr>
+      </table>              
+      <%}%>
+      <% if(if_country){ %>
+      <p class="text-left text-uppercase">Country information</p>
+
+      <table class="table table-striped table-bordered">  
+                  
+                    <tr>
+                        <th>Name</th>
+                        <th>Numer of Player</th>
+                        <th>Code</th>
+                        <th>Continent</th>
+                    </tr>
+
+      <tr>
+        <th><%=country[0].C_Name%></th>
+        <th><%=country[0].N_O_P%></th>
+        <th><%=country[0].C_Code%></th>
+        <th><%=country[0].Continent%></th>
+        
+      </tr>
+    </table>
+      <%}%>
+
+      <br><br>
+      <p class="text-left text-uppercase">Event information</p>
+
+      <table class="table table-striped table-bordered">  
+                  
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Sports</th>
+                        <th>Place</th>
+                        <th>Place Code</th>
+                    </tr>
+             
+
+              <% for(var i=0; i < info.length; i++){ %>
+                <tr>
+                        <th><%= info[i].Date%></th>
+                        <th><%=info[i].TIME%></th>
+                        <th><%=info[i].E_type%></th>
+                        <th><%=info[i].S_Name%></th>
+                        <th><%=info[i].B_Name%></th>
+                        <th><%=info[i].Place%></th>
+                    </tr>
+                    <% }} %>
                 </table>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script type="text/javascript" src = "js/bootstrap.js"></script>
-</body>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+<script type="text/javascript"
+     src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+    </script> 
+    <script type="text/javascript"
+     src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
+    </script>
+
+<script type="text/javascript"
+     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+    </script>
+    <script type="text/javascript"
+     src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+    </script>
+    </body>
 </html>
