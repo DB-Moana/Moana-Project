@@ -56,38 +56,41 @@ app.post('/search-result', function (req, res) {
 	//
 	event_data = [];
 	console.log(req.body); // log to the node.js server
-	
+	var p = req.body.player;
+	var d = req.body.date;
+	var c = req.body.country;
+	var s = req.body.sports;
 	
 
 	var searchtag = 0;
-	if(req.body.player != '')
+	if(p != '')
 	{
 		searchtag = 1;
-		if(req.body.date !='')
+		if(d !='')
 		{
 			searchtag = 5;
 		}
 	}
-	else if(req.body.date !='')
+	else if(d !='')
 	{
 		searchtag = 2;
-		if(req.body.country !='')
+		if(c !='')
 		{
 			searchtag = 6;
 		}
-		else if(req.body.sports !='')
+		else if(s !='')
 		{
 			searchtag = 7;
 		}
 	}
-	else if(req.body.country !='')
+	else if(c !='')
 	{
 		searchtag = 3;
-		if(req.body.sports !=''){
+		if(s !=''){
 			searchtag = 8;
 		}
 	}
-	else if(req.body.sports !='')
+	else if(s !='')
 	{
 		searchtag = 4;
 	}
@@ -122,8 +125,8 @@ app.post('/search-result', function (req, res) {
 	if(searchtag == 1 || searchtag == 5) //Player, Player + Date
 	{
 		queryStr1 = "SELECT P_Name, Age, Height, Weight, Sport, Country FROM player WHERE P_Name LIKE '%"+
-					req.body.player + "%';";
-		queryStr2 = "CREATE VIEW Found_event AS SELECT PLAYER_EVENT.E_Type, PLAYER_EVENT.S_Name FROM PLAYER_EVENT WHERE PLAYER_EVENT.Player = '"+req.body.player+"';";
+					p + "%';";
+		queryStr2 = "CREATE VIEW Found_event AS SELECT PLAYER_EVENT.E_Type, PLAYER_EVENT.S_Name FROM PLAYER_EVENT WHERE PLAYER_EVENT.Player = '"+p+"';";
 
 		console.log("Retrieve query: " + queryStr1); // you may check the queryStr
 
@@ -146,7 +149,7 @@ app.post('/search-result', function (req, res) {
 						queryStr3 ="SELECT * FROM event_building;";
 					}
 					else{
-						queryStr3 ="SELECT * FROM event_building WHERE event_building.Date ='" + req.body.date+"';";
+						queryStr3 ="SELECT * FROM event_building WHERE event_building.Date ='" + d+"';";
 					}
 					
 					console.log(queryStr3);
@@ -199,7 +202,7 @@ app.post('/search-result', function (req, res) {
 
 	if(searchtag == 2) //Date
 	{	
-		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.Date ='" + req.body.date+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
+		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.Date ='" + d+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);		
 		queryStr =  "SELECT * FROM event_building;"
 		connection.query(queryStr, function (err, rows, fields) { // send query to MySQL
@@ -238,8 +241,8 @@ app.post('/search-result', function (req, res) {
 	}
 	if(searchtag == 3 || searchtag == 6 || searchtag == 8) //Country, Date+Country, Sports + Country
 	{
-		var cou = req.body.country;
-		queryStr = "CREATE VIEW Found_player AS SELECT PLAYER.P_Name FROM PLAYER WHERE PLAYER.Country = '"+cou+"';";
+		
+		queryStr = "CREATE VIEW Found_player AS SELECT PLAYER.P_Name FROM PLAYER WHERE PLAYER.Country = '"+c+"';";
 		console.log(queryStr);
 		connection.query(queryStr); // send query to MySQL
 		queryStr1 = "CREATE VIEW Found_Event AS SELECT PLAYER_EVENT.E_Type, PLAYER_EVENT.S_Name FROM PLAYER_EVENT, Found_player WHERE PLAYER_EVENT.Player = Found_player.P_Name;";
@@ -260,15 +263,15 @@ app.post('/search-result', function (req, res) {
 		}
 		else if(searchtag == 6)
 		{
-			queryStr2 ="SELECT DISTINCT * FROM event_building WHERE event_building.Date ='"+req.body.date+"' ORDER BY event_building.Date;";
+			queryStr2 ="SELECT DISTINCT * FROM event_building WHERE event_building.Date ='"+d+"' ORDER BY event_building.Date;";
 		}
 		else{
-			queryStr2 ="SELECT DISTINCT * FROM event_building WHERE event_building.S_Name ='"+req.body.sports+"' ORDER BY event_building.Date;";
+			queryStr2 ="SELECT DISTINCT * FROM event_building WHERE event_building.S_Name ='"+s+"' ORDER BY event_building.Date;";
 		}
 		console.log(queryStr2);
 		connection.query(queryStr2, function (err, rows, fields) { // send query to MySQL
 			queryStr3 = "SELECT N_O_P, C_Code, Continent, C_Name FROM Country WHERE C_Code LIKE '%"+
-					cou + "%';";
+					c + "%';";
 			console.log(queryStr3);
 			connection.query(queryStr3, function (err, rows1, fields) { 
 				if (err)
@@ -312,7 +315,7 @@ app.post('/search-result', function (req, res) {
 	}
 	if(searchtag == 4) //Sports
 	{
-		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + req.body.sports+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
+		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + s+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);
 
 		queryStr = "SELECT * FROM event_building ORDER BY event_building.Date;"
@@ -354,7 +357,7 @@ app.post('/search-result', function (req, res) {
 	
 	if(searchtag == 7) // Date+ Sports
 	{
-		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + req.body.sports+"'AND EVENT.Date ='" + req.body.date+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
+		queryStrb = "CREATE VIEW event_building AS SELECT EVENT.Date, EVENT.TIME, EVENT.E_type, EVENT.S_Name, EVENT.Place, Place.B_Name FROM EVENT, Place WHERE EVENT.S_Name ='" + s+"'AND EVENT.Date ='" + d+"' AND EVENT.Place = Place.B_Code ORDER BY EVENT.Date;";
 		connection.query(queryStrb);
 		queryStr = "SELECT * FROM event_building;"
 		console.log(queryStr);
