@@ -238,7 +238,8 @@ app.post('/search-result', function (req, res) {
 	}
 	if(searchtag == 3 || searchtag == 6 || searchtag == 8) //Country, Date+Country, Sports + Country
 	{
-		queryStr = "CREATE VIEW Found_player AS SELECT PLAYER.P_Name FROM PLAYER WHERE PLAYER.Country = '"+req.body.country+"';";
+		var cou = req.body.country;
+		queryStr = "CREATE VIEW Found_player AS SELECT PLAYER.P_Name FROM PLAYER WHERE PLAYER.Country = '"+cou+"';";
 		console.log(queryStr);
 		connection.query(queryStr); // send query to MySQL
 		queryStr1 = "CREATE VIEW Found_Event AS SELECT PLAYER_EVENT.E_Type, PLAYER_EVENT.S_Name FROM PLAYER_EVENT, Found_player WHERE PLAYER_EVENT.Player = Found_player.P_Name;";
@@ -267,7 +268,7 @@ app.post('/search-result', function (req, res) {
 		console.log(queryStr2);
 		connection.query(queryStr2, function (err, rows, fields) { // send query to MySQL
 			queryStr3 = "SELECT N_O_P, C_Code, Continent, C_Name FROM Country WHERE C_Code LIKE '%"+
-					req.body.country + "%';";
+					cou + "%';";
 			console.log(queryStr3);
 			connection.query(queryStr3, function (err, rows1, fields) { 
 				if (err)
@@ -391,6 +392,7 @@ app.post('/search-result', function (req, res) {
 				});	
 		connection.query("Drop view event_building");
 	}
+	req.body = {};
 
 	
 	
